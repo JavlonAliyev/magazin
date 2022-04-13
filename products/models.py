@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 
@@ -52,6 +54,14 @@ class ProductModel(models.Model):
 
     def __str__(self):
         return self.title
+
+    def is_discount(self):
+        return self.discount != 0
+
+    def get_price(self):
+        if self.is_discount():
+            return self.price - self.price * self.discount / 100
+        return self.price
 
     class Meta:
         verbose_name = 'product'
